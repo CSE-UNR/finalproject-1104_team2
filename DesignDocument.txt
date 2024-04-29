@@ -1,0 +1,92 @@
+//Parker Henry & Ellison Domingo
+//Final Project Design Doc
+Data: 
+
+Image size – 2 integers declared for length and width  
+
+File name – file to get image information from 
+
+Menu choice – int 
+
+Second menu choice – int 
+
+Crop parameters – ints 
+
+Save option - char 
+
+ 
+
+Functions: 
+
+Main() 
+Due Date: 5/7/24 - Joint
+Functionality: 
+
+Display the first menu and continue based off user choice 
+
+If user chooses to display current image read file that image is stored in (DisplayImage()) 
+
+If user choses to load new image get user input for file name and display image (DisplayImage()) 
+
+If user chooses to edit image display second menu and continue based off of user choice 
+
+If user choses to brighten increase by one and display (BrightenPic()) 
+If user choses to dim decrease brightness value by one and display (DimPic()) 
+
+In either case allow option to save and prompted for a file name (SavePic()) 
+
+Iterate back to first menu until exit option is chosen 
+Due Date:
+ 
+
+FirstMenu() 
+
+Input:none 
+Output:choice 
+Functionality: display options (load,display,edit, or exit) and allow user to make a selection 
+Due Date: 5/1/24 - Partner 1
+ 
+
+DisplayImage() 
+
+Input:file pointer 
+Output: none 
+Functionality: should print the image to the screen (must convert brightness number to character value)
+ Due Date: 5/4/24 - Joint
+
+SecondMenu() 
+
+Input:none 
+Output:choice 
+Functionality:should display options(crop, dim, brighten) and allow user to make choice 
+Due Date: 5/1/24 - Partner 2
+ 
+
+BrightenPic() 
+
+Input: file pointer for input and output 
+Output: new file with new pic info (use pointer so its void) 
+Functionality: should increase brightness value by 1 and display new image information as well as give option to save it to new file 
+Due Date:5/4/24 - Joint
+ 
+
+DimPic() 
+
+Input:  file pointer for input and output 
+Output: new file with new pic info (use pointer so its void) 
+Functionality: decrease brightness value by one and display save new image information as well as give option to save it to new file 
+Due Date:5/4/24 - Joint
+ 
+
+SavePic() 
+Input: new image size, new image brightness level, file pointer 
+Output: void 
+Functionality: get user input for file name and save new data to file 
+Due Date: 5/4/24 - Joint
+
+crop()
+Functionality: Prompt user for a smaller section of the original image (can’t be smaller than the
+original image), create a new array of the provided dimensions, write into the new array using
+the provided section of the original image as a reference
+Due Date: 5/4/24 - Joint
+ 
