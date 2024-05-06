@@ -80,11 +80,12 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 	}
 	
 	int rowIndex = 0, columnIndex = 0;
-	
+	//this counts column index:
 	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1 && originalImage[rowIndex][columnIndex] != '\n')
 	{
 	columnIndex++;
 	}
+	//this counts row index:
 	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1)
 	{
 		if (originalImage[rowIndex][columnIndex] == '\n')
@@ -95,16 +96,25 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 	fclose(filePtr);
 	
 
-	//rowIndex++;
-	//columnIndex--;
+	rowIndex++;//must increment by one bc last line doesnt have endline
+	//columnIndex--; (may use idk yet)
 	*rowptr = rowIndex; 
 	*colptr = columnIndex;
 	printf("%d", columnIndex);
 	printf("\n%d", rowIndex);
 	printf("\n\nImage successfully loaded.\n");
+	//my attempt to reassign the 2d array so that it will display properly:
+	for(int k = 0; k<rowIndex; k++)
+	{
+		for(int l =0; l<columnIndex; l++)
+		{
+		fscanf(filePtr, "%c", &originalImage[k][l]);
+		}
+	}
+	//printing array to screen:
 	for(int i=0; i<rowIndex;i++){
 		for(int j=0;j<columnIndex;j++){
-		printf("%d",originalImage[i][j]);
+		printf("%c",originalImage[i][j]);
 		}
 		printf("\n");
 	}
