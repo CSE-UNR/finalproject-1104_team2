@@ -81,34 +81,33 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 	
 	int rowIndex = 0, columnIndex = 0;
 	
+	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1 && originalImage[rowIndex][columnIndex] != '\n')
+	{
+	columnIndex++;
+	}
 	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1)
 	{
-		columnIndex = 0;
-		while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1)
-		{
-			columnIndex++;
-		}
+		if (originalImage[rowIndex][columnIndex] == '\n')
+		{	
 		rowIndex++;
-	}
-	
-	fclose(filePtr);
-		
-		
-	for (int i = 0; i < rowIndex; i++)
-	{
-		for (int j = 0; j < columnIndex; j++)
-		{
-			printf("%c", originalImage[i][j]);
 		}
-		printf("\n");
 	}
+	fclose(filePtr);
 	
+
+	//rowIndex++;
+	//columnIndex--;
 	*rowptr = rowIndex; 
 	*colptr = columnIndex;
 	printf("%d", columnIndex);
 	printf("\n%d", rowIndex);
 	printf("\n\nImage successfully loaded.\n");
-	
+	for(int i=0; i<rowIndex;i++){
+		for(int j=0;j<columnIndex;j++){
+		printf("%d",originalImage[i][j]);
+		}
+		printf("\n");
+	}
 	
 
 	
@@ -119,14 +118,7 @@ void DisplayImage(int cols,int rows,char displayfilename[FILENAMEMAX],char Image
 	
 	printf("\n");
 	
-	for (int rowIndex = 0; rowIndex < rows; rowIndex++)
-	{
-		for (int columnIndex = 0; columnIndex < cols; columnIndex++)
-		{
-			printf("%d", Imageusing[rowIndex][columnIndex]);
-		}
-		printf("\n");
-	}
+	
 	
 	
 	
