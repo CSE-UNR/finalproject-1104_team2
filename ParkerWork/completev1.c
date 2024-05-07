@@ -40,9 +40,9 @@ int main()
 	}
 	
 	
-	printf("\n%s", filename);
+	printf("\n%s\n", filename);
 	
-	//DisplayImage(colnum, rownum, filename, originalImage);
+	DisplayImage(colnum, rownum, filename, originalImage);
 	
 	
 	
@@ -67,12 +67,8 @@ int FirstMenu()
 }
 
 // LoadImage() definition
-void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colptr)
+void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colptr)
 {
-	
-
-	char originalImage[MAX_ROWS][MAX_COLUMNS];
-
 	FILE *filePtr = fopen(loadfilename, "r");
 	if (filePtr == NULL)
 	{
@@ -86,12 +82,14 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 	columnIndex++;
 	}
 	//this counts row index:
-	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1)
-	{
-		if (originalImage[rowIndex][columnIndex] == '\n')
-		{	
-		rowIndex++;
-		}
+	int columnrowIndex =0;
+	  while (fscanf(filePtr, "%c", &originalImage[rowIndex][columnrowIndex]) == 1) {
+        if (originalImage[rowIndex][columnrowIndex] == '\n') {
+            rowIndex++;
+            columnrowIndex = 0; // Reset columnIndex for each new row
+        } else {
+            columnrowIndex++;
+	}
 	}
 	fclose(filePtr);
 	
@@ -103,20 +101,16 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 	printf("%d", columnIndex);
 	printf("\n%d", rowIndex);
 	printf("\n\nImage successfully loaded.\n");
-	//my attempt to reassign the 2d array so that it will display properly:
-	for(int k = 0; k<rowIndex; k++)
-	{
-		for(int l =0; l<columnIndex; l++)
-		{
-		fscanf(filePtr, "%c", &originalImage[k][l]);
-		}
-	}
-	//printing array to screen:
-	for(int i=0; i<rowIndex;i++){
-		for(int j=0;j<columnIndex;j++){
-		printf("%c",originalImage[i][j]);
-		}
-		printf("\n");
+	
+	
+	
+
+	// Printing array to screen:
+	for (int i = 0; i < rowIndex; i++) {
+		for (int j = 0; j < columnIndex; j++) {
+        	printf("%c", originalImage[i][j]);
+    		}
+    		printf("\n"); // Move to the next line after printing a row
 	}
 	
 
@@ -125,11 +119,14 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 // DisplayImage() definition
 void DisplayImage(int cols,int rows,char displayfilename[FILENAMEMAX],char Imageusing[][cols] )
 {
-	
-	printf("\n");
-	
-	
-	
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%c", Imageusing[i][j]);
+        }
+        printf("\n");
+    }
+
 	
 	
 }
