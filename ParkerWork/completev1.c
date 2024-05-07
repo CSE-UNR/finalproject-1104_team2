@@ -9,17 +9,19 @@ void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int
 void DisplayImage(int cols, char image[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colsptr);
 
 int SecondMenu();
-void DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols])
+void DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols]);
 void BrightenImage(int cols, char originalImage[][cols], int rowptrb, int colptrb, char newbrightimage[][cols]);
 int main()
 {
 	char originalImage[MAX_ROWS][MAX_COLUMNS];
 	char brightenedImage[MAX_ROWS][MAX_COLUMNS];
+	char dimnedImage[MAX_ROWS][MAX_COLUMNS];
 	int firstMenuChoice;
+	int secondmenuchoice;
 	int rownum;
 	int colnum;
 	char filename[FILENAMEMAX];
-	
+	do{
 	firstMenuChoice = FirstMenu();
 	switch (firstMenuChoice)
 	{
@@ -29,26 +31,48 @@ int main()
 			LoadImage(MAX_COLUMNS, originalImage, filename, &rownum, &colnum);
 			break;
 		case 2:
-			printf("\n(supposed to display image)\n");
-			
+			//printf("\n(supposed to display image)\n");
+			DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
 			break;
 		case 3:
-			printf("\n(supposed to edit image)\n");
+			//printf("\n(supposed to edit image)\n");
+			secondmenuchoice = SecondMenu();
+			switch(secondmenuchoice)
+			{
+			case 1:
+			//crop
+				break;
+			case 2:
+				DimImage(MAX_COLUMNS, originalImage, rownum, colnum, dimnedImage);
+				break;
+			case 3:
+				BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
+				break;
+			case 4:
+				break;
+				
+			default:
+				printf("\n(improper choice)\n");
+				break;	
+		
+			
+			}
 			break;
 		case 4:
-			printf("\n(supposed to exit program)\n");
+			printf("\nGoodbye!\n");
 			break;
 		default:
 			printf("\n(improper choice)\n");
 			break;
 	}
 	
-	
+	}
+	while(firstMenuChoice != 4);
 	printf("\n%s\n", filename);
 	
-	DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
-	BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
-	DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols])
+	
+	//BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
+	//DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols]);
 	
 	
 }
@@ -117,22 +141,11 @@ void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEM
 void DisplayImage(int cols, char originalImage[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colptr)
 {
 	printf("\nstarting display test...\n");
-	printf("%d", colptr);
-	printf("\n%d", rowptr);
 	printf("\n\n");
-	
-	
 	
 
 	// Printing array to screen:
-	for (int i = 0; i < rowptr; i++) {
-		for (int j = 0; j < colptr; j++) {
-        	printf("%c", originalImage[i][j]);
-    		}
-    		printf("\n"); // Move to the next line after printing a row
-	}
-	// Printing array to screen:
-	for (int i = 0; i < rowptr; i++) {
+	for (int i = 0; i < rowptr-1; i++) {
 		for (int j = 0; j < colptr; j++) {
 		switch (originalImage[i][j])
 		{
@@ -171,7 +184,7 @@ void DisplayImage(int cols, char originalImage[][cols], char displayfilename[FIL
 int SecondMenu(){
   int choice;
   do{
-    printf("**EDITING**\n1: Crop image\n2: Dim image\n3: Brighten image\n0: Return to main menu\n");
+    printf("**EDITING**\n[1]: Crop image\n[2]: Dim image\n[3]: Brighten image\n[4]: Return to main menu\n");
     printf("Choose from one of the options above:");
     scanf("%d", &choice);
     if(choice<1 || choice>4){
@@ -183,28 +196,29 @@ int SecondMenu(){
   
   
 void DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols]){
-for (int i = 0; i < rowptrb; i++) {
-		for (int j = 0; j < colptrb; j++) {
+
+for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
 		switch (originalImage[i][j])
 		{
 			case '0':
-				printf(".");
+				printf(" ");
 				newdimImage[i][j] = '0';
 				break;
 			case '1':
-				printf("o");
+				printf(" ");
 				newdimImage[i][j] = '0';
 				break;
 			case '2':
-				printf("O");
+				printf(".");
 				newdimImage[i][j] = '1';
 				break;
 			case '3':
-				printf("0");
+				printf("o");
 				newdimImage[i][j] = '2';
 				break;
 			case '4':
-				printf("0");
+				printf("O");
 				newdimImage[i][j] = '3';
 				break;
 			default:
@@ -213,10 +227,33 @@ for (int i = 0; i < rowptrb; i++) {
     		}
     		printf("\n");
  		}
- 		char choice;
- 		scanf(" %c", choice);
- 		if(choice == 'Y' || choice == 'y')
+ 		char choicesec;
+ 		printf("Would you like to save the file? (Y or N): ");
+ 		scanf(" %c", &choicesec);
+ 		if(choicesec == 'Y' || choicesec == 'y')
  		{
+ 		
+ 			FILE *fptr;
+ 			char newfilename[50];
+ 			printf("Input file name(no spaces, include extension): ");
+ 			scanf("%s", &newfilename);
+ 			fptr = fopen(newfilename, "w");
+ 			 if (fptr == NULL)
+ 			{
+       				 printf("Unable to open file.\n");
+    			}
+    			else
+    			{
+    				for (int i = 0; i < rows; i++)
+    				{
+					for (int j = 0; j < columns; j++) 
+					{
+        					fprintf(fptr,"%c", newdimImage[i][j]);
+    					}
+    					fprintf(fptr,"\n");
+    				}
+    				fclose(fptr);
+    			}
  		
  		}
  
@@ -255,12 +292,32 @@ for (int i = 0; i < rowptrb; i++) {
     		}
     		printf("\n");
  		}
- 		printf("Would you like to save the file? (Y or N)");
- 		char choice;
- 		scanf(" %c", choice);
- 		if(choice == 'Y' || choice == 'y')
+ 		printf("Would you like to save the file? (Y or N): ");
+ 		char choicesec;
+ 		scanf(" %c", &choicesec);
+ 		if(choicesec == 'Y' || choicesec == 'y')
  		{
- 		
+ 			FILE *fptr;
+ 			char newfilename[50];
+ 			printf("Input file name(no spaces, include extension): ");
+ 			scanf("%s", &newfilename);
+ 			fptr = fopen(newfilename, "w");
+ 			 if (fptr == NULL)
+ 			{
+       				 printf("Unable to open file.\n");
+    			}
+    			else
+    			{
+    				for (int i = 0; i < rowptrb; i++)
+    				{
+					for (int j = 0; j < colptrb; j++) 
+					{
+        					fprintf(fptr,"%c", newbrightimage[i][j]);
+    					}
+    					fprintf(fptr,"\n");
+    				}
+    				fclose(fptr);
+    			}
  		}
  
  }
