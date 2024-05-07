@@ -6,11 +6,14 @@
 
 int FirstMenu();
 void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colsptr);
-void DisplayImage(int cols,int rows, char displayfilename[FILENAMEMAX], char Imageusing[][cols]);
+void DisplayImage(int cols, char image[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colsptr);
 int SecondMenu();
+
+void BrightenImage(int cols, char originalImage[][cols], int rowptrb, int colptrb, char newbrightimage[][cols]);
 int main()
 {
 	char originalImage[MAX_ROWS][MAX_COLUMNS];
+	char brightenedImage[MAX_ROWS][MAX_COLUMNS];
 	int firstMenuChoice;
 	int rownum;
 	int colnum;
@@ -26,7 +29,7 @@ int main()
 			break;
 		case 2:
 			printf("\n(supposed to display image)\n");
-			//DisplayImage(colnum, rownum, filename, originalImage);
+			
 			break;
 		case 3:
 			printf("\n(supposed to edit image)\n");
@@ -42,8 +45,8 @@ int main()
 	
 	printf("\n%s\n", filename);
 	
-	DisplayImage(colnum, rownum, filename, originalImage);
-	
+	DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
+	BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
 	
 	
 	
@@ -107,66 +110,61 @@ void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEM
 	
 	
 
+	
+}
+// DisplayImage() definition
+void DisplayImage(int cols, char originalImage[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colptr)
+{
+	printf("\nstarting display test...\n");
+	printf("%d", colptr);
+	printf("\n%d", rowptr);
+	printf("\n\n");
+	
+	
+	
+
 	// Printing array to screen:
-	for (int i = 0; i < rowIndex; i++) {
-		for (int j = 0; j < columnIndex; j++) {
+	for (int i = 0; i < rowptr; i++) {
+		for (int j = 0; j < colptr; j++) {
         	printf("%c", originalImage[i][j]);
     		}
     		printf("\n"); // Move to the next line after printing a row
 	}
-	
-
-	
-}
-// DisplayImage() definition
-void DisplayImage(int cols,int rows,char displayfilename[FILENAMEMAX],char Imageusing[][cols] )
-{
-	FILE *filePtr = fopen(displayfilename, "r");
-	if (filePtr == NULL)
-	{
-		printf("file error\n");
-	}
-	
-	int rowIndex = 0, columnIndex = 0;
-	//this counts column index:
-	while(fscanf(filePtr, "%c", &Imageusing[rowIndex][columnIndex]) == 1 && &Imageusing[rowIndex][columnIndex] != '\n')
-	{
-	columnIndex++;
-	}
-	//this counts row index:
-	int columnrowIndex =0;
-	  while (fscanf(filePtr, "%c", &Imageusing[rowIndex][columnrowIndex]) == 1) {
-        if (Imageusing[rowIndex][columnrowIndex] == '\n') {
-            rowIndex++;
-            columnrowIndex = 0; // Reset columnIndex for each new row
-        } else {
-            columnrowIndex++;
-	}
-	}
-	
-	
-	fclose(filePtr);
-	
-
-	rowIndex++;//must increment by one bc last line doesnt have endline
-	//columnIndex--; (may use idk yet)
-	
-	printf("%d", columnIndex);
-	printf("\n%d", rowIndex);
-	printf("\n\nImage successfully loaded.\n");
-	
-	
-	
-
 	// Printing array to screen:
-	for (int i = 0; i < rowIndex; i++) {
-		for (int j = 0; j < columnIndex; j++) {
-        	printf("%c", Imageusing[i][j]);
+	for (int i = 0; i < rowptr; i++) {
+		for (int j = 0; j < colptr; j++) {
+		switch (originalImage[i][j])
+		{
+			case '0':
+				printf(" ");
+				//originalImage[i][j] = 
+				break;
+			case '1':
+				printf(".");
+				//originalImage[i][j] = 
+				break;
+			case '2':
+				printf("o");
+				//originalImage[i][j] = 
+				break;
+			case '3':
+				printf("O");
+				//originalImage[i][j] = 
+				break;
+			case '4':
+				printf("0");
+				//originalImage[i][j] = 
+				break;
+			default:
+				break;
+		}
     		}
     		printf("\n"); // Move to the next line after printing a row
 	}
-}
+	
 
+	
+}
 //second menu def
 
 int SecondMenu(){
@@ -184,8 +182,44 @@ int SecondMenu(){
   
   
  void DimImage(){
+ //Ellison
  
  
  
+ }
+ 
+ 
+ void BrightenImage(int cols, char originalImage[][cols], int rowptrb, int colptrb,char newbrightimage[][cols]){
+ 	for (int i = 0; i < rowptrb; i++) {
+		for (int j = 0; j < colptrb; j++) {
+		switch (originalImage[i][j])
+		{
+			case '0':
+				printf(".");
+				newbrightimage[i][j] = '1';
+				break;
+			case '1':
+				printf("o");
+				newbrightimage[i][j] = '2';
+				break;
+			case '2':
+				printf("O");
+				newbrightimage[i][j] = '3';
+				break;
+			case '3':
+				printf("0");
+				newbrightimage[i][j] = '4';
+				break;
+			case '4':
+				printf("0");
+				newbrightimage[i][j] = '4';
+				break;
+			default:
+				break;
+		}
+    		}
+    		printf("\n");
+ 		}
+ 		
  
  }
