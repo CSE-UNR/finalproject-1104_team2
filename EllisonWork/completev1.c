@@ -132,7 +132,26 @@ void DisplayImage(int cols, char originalImage[][cols], char loadfilename[FILENA
 	// Printing array to screen:
 	for (int i = 0; i < rowptr; i++) {
 		for (int j = 0; j < colptr; j++) {
-        	printf("%c", originalImage[i][j]);
+		switch (originalImage[i][j])
+		{
+			case '0':
+				printf(" ");
+				break;
+			case '1':
+				printf(".");
+				break;
+			case '2':
+				printf("o");
+				break;
+			case '3':
+				printf("O");
+				break;
+			case '4':
+				printf("0");
+				break;
+			default:
+				break;
+		}
     		}
     		printf("\n"); // Move to the next line after printing a row
 	}
