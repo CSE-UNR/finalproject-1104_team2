@@ -7,8 +7,9 @@
 int FirstMenu();
 void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colsptr);
 void DisplayImage(int cols, char image[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colsptr);
-int SecondMenu();
 
+int SecondMenu();
+void DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols])
 void BrightenImage(int cols, char originalImage[][cols], int rowptrb, int colptrb, char newbrightimage[][cols]);
 int main()
 {
@@ -47,7 +48,7 @@ int main()
 	
 	DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
 	BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
-	
+	DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols])
 	
 	
 }
