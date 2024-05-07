@@ -181,9 +181,43 @@ int SecondMenu(){
   }
   
   
- void DimImage(){
- //Ellison
- 
+void DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols]){
+for (int i = 0; i < rowptrb; i++) {
+		for (int j = 0; j < colptrb; j++) {
+		switch (originalImage[i][j])
+		{
+			case '0':
+				printf(".");
+				newdimImage[i][j] = '0';
+				break;
+			case '1':
+				printf("o");
+				newdimImage[i][j] = '0';
+				break;
+			case '2':
+				printf("O");
+				newdimImage[i][j] = '1';
+				break;
+			case '3':
+				printf("0");
+				newdimImage[i][j] = '2';
+				break;
+			case '4':
+				printf("0");
+				newdimImage[i][j] = '3';
+				break;
+			default:
+				break;
+		}
+    		}
+    		printf("\n");
+ 		}
+ 		char choice;
+ 		scanf(" %c", choice);
+ 		if(choice == 'Y' || choice == 'y')
+ 		{
+ 		
+ 		}
  
  
  }
@@ -220,6 +254,12 @@ int SecondMenu(){
     		}
     		printf("\n");
  		}
+ 		printf("Would you like to save the file? (Y or N)");
+ 		char choice;
+ 		scanf(" %c", choice);
+ 		if(choice == 'Y' || choice == 'y')
+ 		{
  		
+ 		}
  
  }
