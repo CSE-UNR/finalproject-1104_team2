@@ -27,50 +27,49 @@ int main()
 	int rownum;
 	int colnum;
 	char filename[FILENAMEMAX];
-	do{
-	firstMenuChoice = FirstMenu();
-	switch (firstMenuChoice)
+	do
 	{
-		case 1:
-		
-			LoadImage(MAX_COLUMNS, originalImage, &filename, &rownum, &colnum);
-			break;
-		case 2:
-			//printf("\n(supposed to display image)\n");
-			DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
-			break;
-		case 3:
-			//printf("\n(supposed to edit image)\n");
-			secondmenuchoice = SecondMenu();
-			switch(secondmenuchoice)
-			{
+		firstMenuChoice = FirstMenu();
+		switch (firstMenuChoice)
+		{
 			case 1:
-				//crop
-				CropImage(MAX_COLUMNS, originalImage, rownum, colnum, croppedImage);
+			
+				LoadImage(MAX_COLUMNS, originalImage, &filename, &rownum, &colnum);
 				break;
 			case 2:
-				DimImage(MAX_COLUMNS, originalImage, rownum, colnum, dimnedImage);
+				
+				DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
 				break;
 			case 3:
-				BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
-				break;
-			case 4:
-				break;
 				
+				secondmenuchoice = SecondMenu();
+				switch(secondmenuchoice)
+				{
+					case 1:
+				
+					CropImage(MAX_COLUMNS, originalImage, rownum, colnum, croppedImage);
+					break;
+				case 2:
+					DimImage(MAX_COLUMNS, originalImage, rownum, colnum, dimnedImage);
+					break;
+					case 3:
+						BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
+						break;
+				case 4:
+					printf("Welcome Back!\n");
+					break;
+				default:
+					printf("\n(improper choice)\n");
+					break;	
+				}
+			break;
+			case 4:
+				printf("\nGoodbye!\n");
+				break;
 			default:
 				printf("\n(improper choice)\n");
-				break;	
-		
-			
-			}
-			break;
-		case 4:
-			printf("\nGoodbye!\n");
-			break;
-		default:
-			printf("\n(improper choice)\n");
-			break;
-	}
+				break;
+		}
 	
 	}
 	while(firstMenuChoice != 4);
@@ -82,7 +81,7 @@ int FirstMenu()
 {
 	int choice;
 	
-	printf("\nWelcome to the image processing program. Please select an option below.");
+	printf("\n ***Image processing program***\n Please select an option below.");
 	printf("\n[1] Load new image");
 	printf("\n[2] Display current image");
 	printf("\n[3] Edit current image");
@@ -190,7 +189,8 @@ void DisplayImage(int cols, char originalImage[][cols], char displayfilename[FIL
 }
 //second menu def
 
-int SecondMenu(){
+int SecondMenu()
+{
 	int choice;
 	do
 	{
@@ -204,7 +204,11 @@ int SecondMenu(){
 	}
 	while( choice > 4 || choice < 1);
  	return choice;
-	}
+}
+	
+	
+	
+	
 	
  void CropImage(int cols, char originalImage[][cols], int rows, int columns, char newcroppedImage[][cols])
 {
