@@ -6,9 +6,9 @@
 
 #define MAX_ROWS 500
 #define MAX_COLUMNS 500
-#define TEST_FILE "test_image.txt"
+#define TEST_FILE "test_image2.txt"
 
-void FirstMenu(int cols, int image[][cols], int *choice);
+void FirstMenu(int cols, char image[][cols], int *choice);
 void LoadImage(int cols, char image[][cols], FILE* file);
 void DisplayImage(int cols, char image[][cols]);
 
@@ -26,7 +26,7 @@ int main()
 }
 
 // FirstMenu() definition
-void FirstMenu(int cols, int image[][cols], int *choice)
+void FirstMenu(int cols, char image[][cols], int *choice)
 {
 	
 	
@@ -65,10 +65,8 @@ void FirstMenu(int cols, int image[][cols], int *choice)
 void LoadImage(int cols, char image[][cols], FILE *file)
 {
 	printf("\n(Currently file name is hardcoded in for testing, will ask for input later)");
-	
-	char originalImage[MAX_ROWS][MAX_COLUMNS];
 
-	FILE *filePtr = fopen("test_image.txt", "r");
+	FILE *filePtr = fopen(TEST_FILE, "r");
 	if (filePtr == NULL)
 	{
 		printf("file error\n");
@@ -76,10 +74,10 @@ void LoadImage(int cols, char image[][cols], FILE *file)
 	
 	int rowIndex = 0, columnIndex = 0;
 	
-	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1)
+	while(fscanf(filePtr, "%c", &image[rowIndex][columnIndex]) == 1)
 	{
 		columnIndex = 0;
-		while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1)
+		while(fscanf(filePtr, "%c", &image[rowIndex][columnIndex]) == 1)
 		{
 			columnIndex++;
 		}
@@ -94,11 +92,12 @@ void LoadImage(int cols, char image[][cols], FILE *file)
 	{
 		for (int j = 0; j < columnIndex; j++)
 		{
-			printf("%c", originalImage[i][j]);
+			printf("%c", image[i][j]);
 		}
-		printf("\n");
+		printf("end\n");
 	}
 }
+
 // DisplayImage() definition
 void DisplayImage(int cols, char image[][cols])
 {
