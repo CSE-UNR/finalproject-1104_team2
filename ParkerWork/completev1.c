@@ -91,6 +91,8 @@ void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEM
             columnrowIndex++;
 	}
 	}
+	
+	
 	fclose(filePtr);
 	
 
@@ -119,16 +121,50 @@ void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEM
 // DisplayImage() definition
 void DisplayImage(int cols,int rows,char displayfilename[FILENAMEMAX],char Imageusing[][cols] )
 {
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            printf("%c", Imageusing[i][j]);
-        }
-        printf("\n");
-    }
-
+	FILE *filePtr = fopen(displayfilename, "r");
+	if (filePtr == NULL)
+	{
+		printf("file error\n");
+	}
+	
+	int rowIndex = 0, columnIndex = 0;
+	//this counts column index:
+	while(fscanf(filePtr, "%c", &Imageusing[rowIndex][columnIndex]) == 1 && &Imageusing[rowIndex][columnIndex] != '\n')
+	{
+	columnIndex++;
+	}
+	//this counts row index:
+	int columnrowIndex =0;
+	  while (fscanf(filePtr, "%c", &Imageusing[rowIndex][columnrowIndex]) == 1) {
+        if (Imageusing[rowIndex][columnrowIndex] == '\n') {
+            rowIndex++;
+            columnrowIndex = 0; // Reset columnIndex for each new row
+        } else {
+            columnrowIndex++;
+	}
+	}
 	
 	
+	fclose(filePtr);
+	
+
+	rowIndex++;//must increment by one bc last line doesnt have endline
+	//columnIndex--; (may use idk yet)
+	
+	printf("%d", columnIndex);
+	printf("\n%d", rowIndex);
+	printf("\n\nImage successfully loaded.\n");
+	
+	
+	
+
+	// Printing array to screen:
+	for (int i = 0; i < rowIndex; i++) {
+		for (int j = 0; j < columnIndex; j++) {
+        	printf("%c", Imageusing[i][j]);
+    		}
+    		printf("\n"); // Move to the next line after printing a row
+	}
 }
 
 //second menu def
