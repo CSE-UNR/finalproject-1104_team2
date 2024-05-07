@@ -6,8 +6,9 @@
 
 int FirstMenu();
 void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colsptr);
-void DisplayImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int rowptr, int colsptr);
+void DisplayImage(int cols, char image[][cols], int rowptr, int colsptr);
 int SecondMenu();
+void DimImage(int cols, char originalImage[][cols], int rows, int columns);
 int main()
 {
 	char originalImage[MAX_ROWS][MAX_COLUMNS];
@@ -20,7 +21,7 @@ int main()
 	switch (firstMenuChoice)
 	{
 		case 1:
-			printf("Input your file name (no spaces)");
+			printf("Input your file name (no spaces): ");
 			scanf(" %s", &filename);
 			LoadImage(MAX_COLUMNS, originalImage, filename, &rownum, &colnum);
 			break;
@@ -42,7 +43,8 @@ int main()
 	
 	printf("\n%s\n", filename);
 	
-	DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
+	DisplayImage(MAX_COLUMNS, originalImage, rownum, colnum);
+	DimImage(MAX_COLUMNS, originalImage, rownum, colnum);
 	
 	
 	
@@ -119,19 +121,19 @@ void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEM
 	
 }
 // DisplayImage() definition
-void DisplayImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEMAX], int rowptr, int colptr)
+void DisplayImage(int cols, char originalImage[][cols], int rows, int columns)
 {
 	printf("\nstarting display test...\n");
-	printf("%d", colptr);
-	printf("\n%d", rowptr);
+	printf("%d", columns);
+	printf("\n%d", rows);
 	printf("\n\n");
 	
 	
 	
 
 	// Printing array to screen:
-	for (int i = 0; i < rowptr; i++) {
-		for (int j = 0; j < colptr; j++) {
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
 		switch (originalImage[i][j])
 		{
 			case '0':
@@ -156,6 +158,8 @@ void DisplayImage(int cols, char originalImage[][cols], char loadfilename[FILENA
     		printf("\n"); // Move to the next line after printing a row
 	}
 	
+	
+	printf("\ndisplay test completed...\n");
 
 	
 }
@@ -175,9 +179,44 @@ int SecondMenu(){
   }
   
   
- void DimImage(){
- 
- 
- 
- 
- }
+// DimImage() definition  
+void DimImage(int cols, char originalImage[][cols], int rows, int columns)
+{
+	printf("\nstarting dim test...\n");
+	printf("%d", columns);
+	printf("\n%d", rows);
+	printf("\n\n");
+	
+	
+	
+
+	// Printing array to screen:
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+		switch (originalImage[i][j])
+		{
+			case '0':
+			case '1':
+				printf(" ");
+				break;
+			case '2':
+				printf(".");
+				break;
+			case '3':
+				printf("o");
+				break;
+			case '4':
+				printf("O");
+				break;
+			default:
+				break;
+		}
+    		}
+    		printf("\n"); // Move to the next line after printing a row
+	}
+	
+	
+	printf("\ndim test completed...\n");
+
+	
+}
