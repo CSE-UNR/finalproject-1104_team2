@@ -1,3 +1,7 @@
+//Author: Parker Henry & Ellison Domingo
+//Due Date: Tuesday May 7
+//Project: Final; Image Processing
+
 #include<stdio.h>
 
 #define MAX_ROWS 500
@@ -5,8 +9,8 @@
 #define FILENAMEMAX 50
 
 int FirstMenu();
-void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colsptr);
-void DisplayImage(int cols, char image[][cols], int rowptr, int colsptr);
+void LoadImage(int cols, char image[][cols], char *loadfilenameptr,int* rowptr, int* colsptr);
+void DisplayImage(int cols, char image[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colsptr);
 
 int SecondMenu();
 void CropImage(int cols, char originalImage[][cols], int rows, int columns, char newcroppedImage[][cols]);
@@ -23,59 +27,52 @@ int main()
 	int rownum;
 	int colnum;
 	char filename[FILENAMEMAX];
-	do{
-	firstMenuChoice = FirstMenu();
-	switch (firstMenuChoice)
+	do
 	{
-		case 1:
-			printf("Input your file name (no spaces)");
-			scanf(" %s", &filename);
-			LoadImage(MAX_COLUMNS, originalImage, filename, &rownum, &colnum);
-			break;
-		case 2:
-			//printf("\n(supposed to display image)\n");
-			DisplayImage(MAX_COLUMNS, originalImage, rownum, colnum);
-			break;
-		case 3:
-			//printf("\n(supposed to edit image)\n");
-			secondmenuchoice = SecondMenu();
-			switch(secondmenuchoice)
-			{
+		firstMenuChoice = FirstMenu();
+		switch (firstMenuChoice)
+		{
 			case 1:
-				CropImage(MAX_COLUMNS, originalImage, rownum, colnum, croppedImage);
+			
+				LoadImage(MAX_COLUMNS, originalImage, &filename, &rownum, &colnum);
 				break;
 			case 2:
-				DimImage(MAX_COLUMNS, originalImage, rownum, colnum, dimnedImage);
+				
+				DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
 				break;
 			case 3:
-				BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
+				
+				secondmenuchoice = SecondMenu();
+				switch(secondmenuchoice)
+				{
+					case 1:
+				
+					CropImage(MAX_COLUMNS, originalImage, rownum, colnum, croppedImage);
+					break;
+				case 2:
+					DimImage(MAX_COLUMNS, originalImage, rownum, colnum, dimnedImage);
+					break;
+					case 3:
+						BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
+						break;
+				case 4:
+					printf("Welcome Back!\n");
+					break;
+				default:
+					printf("\n(improper choice)\n");
+					break;	
+				}
 				break;
 			case 4:
+				printf("\nGoodbye!\n");
 				break;
-				
 			default:
-				printf("\n(improper choice)\n");
-				break;	
-		
-			
-			}
-			break;
-		case 4:
-			printf("\nGoodbye!\n");
-			break;
-		default:
-			printf("\n(improper choice)\n");
-			break;
-	}
+				printf("\n(improper choice)");
+				break;
+		}
 	
 	}
 	while(firstMenuChoice != 4);
-	printf("\n%s\n", filename);
-	
-	
-	//BrightenImage(MAX_COLUMNS, originalImage, rownum, colnum, brightenedImage);
-	//DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols]);
-	
 	
 }
 
@@ -84,7 +81,7 @@ int FirstMenu()
 {
 	int choice;
 	
-	printf("\nWelcome to the image processing program. Please select an option below.");
+	printf("\n ***Image processing program***\n Please select an option below.");
 	printf("\n[1] Load new image");
 	printf("\n[2] Display current image");
 	printf("\n[3] Edit current image");
@@ -97,82 +94,84 @@ int FirstMenu()
 }
 
 // LoadImage() definition
-void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colptr)
+void LoadImage(int cols, char originalImage[][cols],char *loadfilenameptr,int* rowptr, int* colptr)
 {
-	FILE *filePtr = fopen(loadfilename, "r");
-	if (filePtr == NULL)
-	{
-		printf("file error\n");
-	}
-	
-	int rowIndex = 0, columnIndex = 0;
-	//this counts column index:
-	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1 && originalImage[rowIndex][columnIndex] != '\n')
-	{
-	columnIndex++;
-	}
-	//this counts row index:
-	int columnrowIndex =0;
-	  while (fscanf(filePtr, "%c", &originalImage[rowIndex][columnrowIndex]) == 1) {
-        if (originalImage[rowIndex][columnrowIndex] == '\n') {
+   FILE *filePtr;
+    char loadfilename[FILENAMEMAX];
+    int rowIndex = 0, columnIndex = 0;
+	do{
+	printf("Input your file name (no spaces): ");
+        scanf("%s", loadfilename);
+    	filePtr = fopen(loadfilename, "r");
+        if (filePtr == NULL) 
+        {
+            printf("File error\n");
+    	} 
+    }
+    while (filePtr ==NULL);
+    
+    char temp;
+    fscanf(filePtr, "%c", &temp);
+    //printf("Character: %c, ASCII: %d\n", temp, temp);
+    while (fscanf(filePtr, "%c", &temp) == 1) 
+    {
+    	//printf("Character: %c, ASCII: %d\n", temp, temp);
+        if (temp == '\n') 
+        {
             rowIndex++;
-            columnrowIndex = 0; // Reset columnIndex for each new row
+            *colptr = columnIndex;
+            //printf("Row %d, Columns: %d\n", rowIndex, columnIndex);
+            columnIndex = 0;
         } else {
-            columnrowIndex++;
-	}
-	}
-	
-	
-	fclose(filePtr);
-	
+            originalImage[rowIndex][columnIndex] = temp;
+            //printf("\n%c\n",originalImage[rowIndex][columnIndex]); 
+            columnIndex++;
+        }
+    }
+    fclose(filePtr);
 
-	rowIndex++;//must increment by one bc last line doesnt have endline
-	//columnIndex--; (may use idk yet)
-	*rowptr = rowIndex; 
-	*colptr = columnIndex;
-	printf("%d", columnIndex);
-	printf("\n%d", rowIndex);
-	printf("\n\nImage successfully loaded.\n");
-	
-	
-	
+    *rowptr = rowIndex;
+    
 
-	
+    printf("\n\nImage successfully loaded.\n");
+   // printf("Row: %d\n", rowIndex);
+    //printf("Column: %d\n", *colptr);
+
 }
-// DisplayImage() definition
-void DisplayImage(int cols, char originalImage[][cols], int rowptr, int colptr)
-{
-	printf("\n\n");
+
 	
+	
+
+// DisplayImage() definition
+void DisplayImage(int cols, char originalImage[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colptr)
+{
+	printf("\nstarting display test...\n");
+	printf("\n\n");
 
 	// Printing array to screen:
-	for (int i = 0; i < rowptr-1; i++) {
-		for (int j = 0; j < colptr; j++) {
-		switch (originalImage[i][j])
+	for (int i = 0; i < rowptr; i++) {
+		for (int j = 0; j < colptr; j++) 
 		{
-			case '0':
-				printf(" ");
-				//originalImage[i][j] = 
-				break;
-			case '1':
-				printf(".");
-				//originalImage[i][j] = 
-				break;
-			case '2':
-				printf("o");
-				//originalImage[i][j] = 
-				break;
-			case '3':
-				printf("O");
-				//originalImage[i][j] = 
-				break;
-			case '4':
-				printf("0");
-				//originalImage[i][j] = 
-				break;
-			default:
-				break;
-		}
+			switch (originalImage[i][j])
+			{
+				case '0':
+					printf(" ");
+					break;
+				case '1':
+					printf(".");
+					break;
+				case '2':
+					printf("o");
+					break;
+				case '3':
+					printf("O");
+					break;
+				case '4':
+					printf("0");
+					break;
+				default:
+					break;
+			}
     		}
     		printf("\n"); // Move to the next line after printing a row
 	}
@@ -182,25 +181,32 @@ void DisplayImage(int cols, char originalImage[][cols], int rowptr, int colptr)
 }
 //second menu def
 
-int SecondMenu(){
-  int choice;
-  do{
-    printf("**EDITING**\n[1]: Crop image\n[2]: Dim image\n[3]: Brighten image\n[4]: Return to main menu\n");
-    printf("Choose from one of the options above:");
-    scanf("%d", &choice);
-    if(choice<1 || choice>4){
-      printf("\nInvalid choice try again.\n ");
-  }
-  }while( choice > 4 || choice < 1);
-  return choice;
-  }
-  
-
-void CropImage(int cols, char originalImage[][cols], int rows, int columns, char newcroppedImage[][cols])
+int SecondMenu()
+{
+	int choice;
+	do
+	{
+		printf("**EDITING**\n[1]: Crop image\n[2]: Dim image\n[3]: Brighten image\n[4]: Return to main menu\n");
+		printf("Choose from one of the options above:");
+    		scanf("%d", &choice);
+    		if(choice<1 || choice>4)
+    		{
+      			printf("\nInvalid choice try again.\n ");
+  		}
+	}
+	while( choice > 4 || choice < 1);
+ 	return choice;
+}
+	
+	
+	
+	
+	
+ void CropImage(int cols, char originalImage[][cols], int rows, int columns, char newcroppedImage[][cols])
 {
 	int left = 0, right = 0, top = 0, bottom = 0;	
-	
-	DisplayImage(MAX_COLUMNS, originalImage, rows, columns);
+		char filename[50];
+	DisplayImage(MAX_COLUMNS, originalImage, filename, rows, columns);
 	printf("\n\nThe image you want to crop is %d x %d.", rows, columns);
 	printf("\nThe row and column values start in the upper lefthand corner.");
 	
@@ -219,19 +225,21 @@ void CropImage(int cols, char originalImage[][cols], int rows, int columns, char
 	{
 		for (int j = left; j < right; j++)
 		{
+			printf("%c", originalImage[i][j]);
 			newcroppedImage[newRow][newColumn] = originalImage[i][j];
 			newColumn++;
 		}
+		printf("\n");
 		newColumn = 0;
 		newRow++;
 	}
 	
 	printf("\nHere is the cropped image:\n");
-	
-	DisplayImage(MAX_COLUMNS, newcroppedImage, bottom-top, right-left);
+
+	DisplayImage(MAX_COLUMNS, newcroppedImage, filename, bottom-top, right-left);
 	
 	char choicesec;
- 	printf("Would you like to save the file? (Y or N): ");
+ 	printf("\nWould you like to save the file? (Y or N): ");
  	scanf(" %c", &choicesec);
 	if(choicesec == 'Y' || choicesec == 'y')
 	{
@@ -260,37 +268,44 @@ void CropImage(int cols, char originalImage[][cols], int rows, int columns, char
  		
  	}
 }
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   
 void DimImage(int cols, char originalImage[][cols], int rows, int columns, char newdimImage[][cols]){
 
 for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-		switch (originalImage[i][j])
-		{
-			case '0':
-				printf(" ");
-				newdimImage[i][j] = '0';
-				break;
-			case '1':
-				printf(" ");
-				newdimImage[i][j] = '0';
-				break;
-			case '2':
-				printf(".");
-				newdimImage[i][j] = '1';
-				break;
-			case '3':
-				printf("o");
-				newdimImage[i][j] = '2';
-				break;
-			case '4':
-				printf("O");
-				newdimImage[i][j] = '3';
-				break;
-			default:
-				break;
-		}
+			switch (originalImage[i][j])
+			{
+				case '0':
+					printf(" ");
+					newdimImage[i][j] = '0';
+					break;
+				case '1':
+					printf(" ");
+					newdimImage[i][j] = '0';
+					break;
+				case '2':
+					printf(".");
+					newdimImage[i][j] = '1';
+					break;
+				case '3':
+					printf("o");
+					newdimImage[i][j] = '2';
+					break;
+				case '4':
+					printf("O");
+					newdimImage[i][j] = '3';
+					break;
+				default:
+					break;
+			}
     		}
     		printf("\n");
  		}
@@ -331,31 +346,31 @@ for (int i = 0; i < rows; i++) {
  void BrightenImage(int cols, char originalImage[][cols], int rowptrb, int colptrb,char newbrightimage[][cols]){
  	for (int i = 0; i < rowptrb; i++) {
 		for (int j = 0; j < colptrb; j++) {
-		switch (originalImage[i][j])
-		{
-			case '0':
-				printf(".");
-				newbrightimage[i][j] = '1';
-				break;
-			case '1':
-				printf("o");
-				newbrightimage[i][j] = '2';
-				break;
-			case '2':
-				printf("O");
-				newbrightimage[i][j] = '3';
-				break;
-			case '3':
-				printf("0");
-				newbrightimage[i][j] = '4';
-				break;
-			case '4':
-				printf("0");
-				newbrightimage[i][j] = '4';
-				break;
-			default:
-				break;
-		}
+			switch (originalImage[i][j])
+			{
+				case '0':
+					printf(".");
+					newbrightimage[i][j] = '1';
+					break;
+				case '1':
+					printf("o");
+					newbrightimage[i][j] = '2';
+					break;
+				case '2':
+					printf("O");
+					newbrightimage[i][j] = '3';
+					break;
+				case '3':
+					printf("0");
+					newbrightimage[i][j] = '4';
+					break;
+				case '4':
+					printf("0");
+					newbrightimage[i][j] = '4';
+					break;
+				default:
+					break;
+			}
     		}
     		printf("\n");
  		}
