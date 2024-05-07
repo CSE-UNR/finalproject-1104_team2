@@ -6,7 +6,7 @@
 
 int FirstMenu();
 void LoadImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colsptr);
-void DisplayImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colsptr);
+void DisplayImage(int cols, char image[][cols], char loadfilename[FILENAMEMAX], int rowptr, int colsptr);
 int SecondMenu();
 int main()
 {
@@ -42,7 +42,7 @@ int main()
 	
 	printf("\n%s\n", filename);
 	
-	DisplayImage(MAX_COLUMNS, originalImage, filename, &rownum, &colnum);
+	DisplayImage(MAX_COLUMNS, originalImage, filename, rownum, colnum);
 	
 	
 	
@@ -119,49 +119,19 @@ void LoadImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEM
 	
 }
 // DisplayImage() definition
-void DisplayImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEMAX], int* rowptr, int* colptr)
+void DisplayImage(int cols, char originalImage[][cols], char loadfilename[FILENAMEMAX], int rowptr, int colptr)
 {
-	FILE *filePtr = fopen(loadfilename, "r");
-	if (filePtr == NULL)
-	{
-		printf("file error\n");
-	}
-	
-	int rowIndex = 0, columnIndex = 0;
-	//this counts column index:
-	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1 && originalImage[rowIndex][columnIndex] != '\n')
-	{
-	columnIndex++;
-	}
-	//this counts row index:
-	int columnrowIndex =0;
-	  while (fscanf(filePtr, "%c", &originalImage[rowIndex][columnrowIndex]) == 1) {
-        if (originalImage[rowIndex][columnrowIndex] == '\n') {
-            rowIndex++;
-            columnrowIndex = 0; // Reset columnIndex for each new row
-        } else {
-            columnrowIndex++;
-	}
-	}
-	
-	
-	fclose(filePtr);
-	
-
-	rowIndex++;//must increment by one bc last line doesnt have endline
-	//columnIndex--; (may use idk yet)
-	*rowptr = rowIndex; 
-	*colptr = columnIndex;
-	printf("%d", columnIndex);
-	printf("\n%d", rowIndex);
-	printf("\n\nImage successfully loaded.\n");
+	printf("\nstarting display test...\n");
+	printf("%d", colptr);
+	printf("\n%d", rowptr);
+	printf("\n\n");
 	
 	
 	
 
 	// Printing array to screen:
-	for (int i = 0; i < rowIndex; i++) {
-		for (int j = 0; j < columnIndex; j++) {
+	for (int i = 0; i < rowptr; i++) {
+		for (int j = 0; j < colptr; j++) {
         	printf("%c", originalImage[i][j]);
     		}
     		printf("\n"); // Move to the next line after printing a row
