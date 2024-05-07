@@ -9,7 +9,7 @@
 #define FILENAMEMAX 50
 
 int FirstMenu();
-void LoadImage(int cols, char image[][cols], char *loadfilenameptr[FILENAMEMAX],int* rowptr, int* colsptr);
+void LoadImage(int cols, char image[][cols], char *loadfilenameptr,int* rowptr, int* colsptr);
 void DisplayImage(int cols, char image[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colsptr);
 
 int SecondMenu();
@@ -62,12 +62,12 @@ int main()
 					printf("\n(improper choice)\n");
 					break;	
 				}
-			break;
+				break;
 			case 4:
 				printf("\nGoodbye!\n");
 				break;
 			default:
-				printf("\n(improper choice)\n");
+				printf("\n(improper choice)");
 				break;
 		}
 	
@@ -94,67 +94,59 @@ int FirstMenu()
 }
 
 // LoadImage() definition
-void LoadImage(int cols, char originalImage[][cols],char *loadfilenameptr[FILENAMEMAX],int* rowptr, int* colptr)
+void LoadImage(int cols, char originalImage[][cols],char *loadfilenameptr,int* rowptr, int* colptr)
 {
-	FILE *filePtr;
-	char loadfilename[FILENAMEMAX];
+   FILE *filePtr;
+    char loadfilename[FILENAMEMAX];
+    int rowIndex = 0, columnIndex = 0;
 	do{
-		printf("Input your file name (no spaces): ");
-		scanf(" %s", &loadfilename);
-		filePtr = fopen(loadfilename, "r");
-		if (filePtr == NULL)
-		{
-			printf("file error\n");
-		}
-		else{
-			*loadfilenameptr[FILENAMEMAX] = loadfilename;
-		}
-		}
-	while(filePtr == NULL);
-	
-	
-	int rowIndex = 0, columnIndex = 0;
-	//this counts column index:
-	while(fscanf(filePtr, "%c", &originalImage[rowIndex][columnIndex]) == 1 && originalImage[rowIndex][columnIndex] != '\n')
-	{
-		columnIndex++;
-	}
-	//this counts row index:
-	int columnrowIndex =0;
-	while (fscanf(filePtr, "%c", &originalImage[rowIndex][columnrowIndex]) == 1) 
-	{
-       		if (originalImage[rowIndex][columnrowIndex] == '\n') 
-       		{
-            		rowIndex++;
-            		columnrowIndex = 0; // Reset columnIndex for each new row
-        	} 
-        	else 
-        	{
-            		columnrowIndex++;
-		}
-	}
-	
-	
-	fclose(filePtr);
-	
+	printf("Input your file name (no spaces): ");
+        scanf("%s", loadfilename);
+    	filePtr = fopen(loadfilename, "r");
+        if (filePtr == NULL) 
+        {
+            printf("File error\n");
+    	} 
+    }
+    while (filePtr ==NULL);
+    
+    char temp;
+    fscanf(filePtr, "%c", &temp);
+    //printf("Character: %c, ASCII: %d\n", temp, temp);
+    while (fscanf(filePtr, "%c", &temp) == 1) 
+    {
+    	//printf("Character: %c, ASCII: %d\n", temp, temp);
+        if (temp == '\n') 
+        {
+            rowIndex++;
+            *colptr = columnIndex;
+            //printf("Row %d, Columns: %d\n", rowIndex, columnIndex);
+            columnIndex = 0;
+        } else {
+            originalImage[rowIndex][columnIndex] = temp;
+            //printf("\n%c\n",originalImage[rowIndex][columnIndex]); 
+            columnIndex++;
+        }
+    }
+    fclose(filePtr);
 
-	rowIndex++;//must increment by one bc last line doesnt have endline
-	//columnIndex--; (may use idk yet)
-	*rowptr = rowIndex; 
-	*colptr = columnIndex;
-	printf("\n\nImage successfully loaded.\n");
-	
-	
-	
+    *rowptr = rowIndex;
+    
 
-	
+    printf("\n\nImage successfully loaded.\n");
+   // printf("Row: %d\n", rowIndex);
+    //printf("Column: %d\n", *colptr);
+
 }
+
+	
+	
+
 // DisplayImage() definition
 void DisplayImage(int cols, char originalImage[][cols], char displayfilename[FILENAMEMAX], int rowptr, int colptr)
 {
 	printf("\nstarting display test...\n");
 	printf("\n\n");
-	
 
 	// Printing array to screen:
 	for (int i = 0; i < rowptr; i++) {
